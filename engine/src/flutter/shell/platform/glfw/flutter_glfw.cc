@@ -460,14 +460,11 @@ static void GLFWMouseButtonCallback(GLFWwindow* window,
                                     int key,
                                     int action,
                                     int mods) {
-  int64_t button;
-  if (key == GLFW_MOUSE_BUTTON_LEFT) {
-    button = FlutterPointerMouseButtons::kFlutterPointerButtonMousePrimary;
-  } else if (key == GLFW_MOUSE_BUTTON_RIGHT) {
-    button = FlutterPointerMouseButtons::kFlutterPointerButtonMouseSecondary;
-  } else {
-    return;
+  if (key < 0 || key > 7) {
+      return;
   }
+
+  int64_t button = (FlutterPointerMouseButtons)1 << key;
 
   auto* controller = GetWindowController(window);
   controller->buttons = (action == GLFW_PRESS) ? controller->buttons | button
